@@ -41,7 +41,7 @@ public class Order {
     }
 
     public Stream<Book> books() {
-        return null;
+        return books != null ? books.stream() : Stream.empty();
     }
 
     @Override
