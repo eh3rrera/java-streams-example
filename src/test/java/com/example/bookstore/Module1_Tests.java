@@ -64,11 +64,6 @@ public class Module1_Tests {
 
     @Test
     public void task_1() {
-        assertNotNull("Task 1: Method `findCheaperBookInOrder()` doesn't exist in the BookService class.", cheaperBookMethod);
-    }
-
-    @Test
-    public void task_2() {
         Order order = new Order(1, 42.97, testOrder);
         Order emptyOrder = new Order(2, 0.0, null);
 
@@ -79,20 +74,25 @@ public class Module1_Tests {
             resultOrder = order.books();
             resultEmptyOrder = emptyOrder.books();
         } catch(NullPointerException e) {
-            assertTrue("Task 2: Method `Order.books()` throws a NullPointerException when the order contains no books.", false);
+            assertTrue("Task 1: Method `Order.books()` throws a NullPointerException when the order contains no books.", false);
         }
 
-        assertTrue("Task 2: Method `Order.books()` doesn't return a non-empty Stream when the order contains one or more books.",
+        assertTrue("Task 1: Method `Order.books()` doesn't return a non-empty Stream when the order contains one or more books.",
                 resultOrder != null && resultOrder.anyMatch(e -> true));
-        assertTrue("Task 2: Method `Order.books()` doesn't return an empty Stream when the order contains no books.",
+        assertTrue("Task 1: Method `Order.books()` doesn't return an empty Stream when the order contains no books.",
                 resultEmptyOrder != null && !resultEmptyOrder.anyMatch(e -> true));
+    }
+
+    @Test
+    public void task_2() {
+        assertNotNull("Task 2: Method `findCheaperBookInOrder()` doesn't exist in the BookService class.", cheaperBookMethod);
     }
 
     @Test
     public void task_3() {
         Mockito.when(orderMock.books()).thenReturn(testOrder.stream());
 
-        assertNotNull("Task 1: Method `findCheaperBookInOrder()` doesn't exist in the BookService class.", cheaperBookMethod);
+        assertNotNull("Task 2: Method `findCheaperBookInOrder()` doesn't exist in the BookService class.", cheaperBookMethod);
 
         try {
             cheaperBookMethod.invoke(bookService, orderMock);
@@ -105,12 +105,11 @@ public class Module1_Tests {
             Mockito.verify(orderMock).books();
             methodInvoked = true;
         } catch (Error e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         assertTrue("Task 3: Did not call the `books()` method on the `Order` object.",
                 methodInvoked);
-
     }
 
     @Test
@@ -124,14 +123,14 @@ public class Module1_Tests {
         Stream mockStream = Mockito.mock(Stream.class, i -> Optional.of(new Book("", 0.0)));
         Mockito.when(orderMock.books()).thenReturn(mockStream);
 
-        assertNotNull("Task 1: Method `findCheaperBookInOrder()` doesn't exist in the BookService class.", cheaperBookMethod);
+        assertNotNull("Task 2: Method `findCheaperBookInOrder()` doesn't exist in the BookService class.", cheaperBookMethod);
         assertNotNull("Task 4: Field `priceComparator` doesn't exist in the BookService class.",
                 comparatorField);
 
         try {
             cheaperBookMethod.invoke(bookService, orderMock);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         boolean methodInvoked = false;
@@ -139,9 +138,9 @@ public class Module1_Tests {
             Mockito.verify(mockStream).min((Comparator) comparatorField.get(bookService));
             methodInvoked = true;
         } catch (Error e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         assertTrue("Task 5: Didn't call the `min()` method on the stream of books.",
